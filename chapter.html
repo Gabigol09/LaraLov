@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter — Love Story</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="chapter-page">
+    <main class="chapter-book" role="main">
+        <!-- LEFT SIDE: Image panel -->
+        <aside class="chapter-book__left" aria-label="Chapter image">
+            <div class="chapter-book__image-wrap" id="imageContainer">
+                <!-- Image will be loaded dynamically -->
+                <div class="chapter-book__image-placeholder">Loading image...</div>
+            </div>
+        </aside>
+
+        <!-- RIGHT SIDE: Text / message panel -->
+        <section class="chapter-book__right" aria-label="Chapter message">
+            <div class="chapter-book__text" id="textContainer">
+                <!-- Text will be loaded dynamically -->
+                Loading message...
+            </div>
+        </section>
+    </main>
+
+    <div class="chapter-actions">
+        <a href="map.html" class="chapter-btn-back">← Back to Map</a>
+    </div>
+
+    <script>
+        // Get city from URL params
+        function getCityFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('city') || '';
+        }
+
+        // Love messages for each city
+        const cityMessages = {
+            'campinas': 'Every moment with you in Campinas is a treasure. The streets we walked, the memories we made—each one is etched in my heart forever.',
+            'caragua': 'Caraguá holds a special place in our story. The ocean waves remind me of how deep my love for you runs, endless and powerful.',
+            'jacarei': 'In Jacareí, time seemed to stand still when I was with you. Every second felt like a lifetime of happiness.',
+            'sjc': 'São José dos Campos—where our paths crossed and our hearts connected. This city will always remind me of you.',
+        };
+
+        // Find image file for city
+        async function findCityImage(cityName) {
+            const city = cityName.toLowerCase();
+            const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            
+            // Try patterns: "city (1).jpg", "city (2).jpg", etc.
+            for (let i = 1; i <= 10; i++) {
+                for (const ext of extensions) {
+                    const filename = `${city} (${i}).${ext}`;
+                    const filepath = `assets/photos/${filename}`;
+                    
+                    try {
+                        const response = await fetch(filepath, { method: 'HEAD' });
+                        if (response.ok) {
+                            return filepath;
+                        }
+                    } catch (e) {
+                        // File doesn't exist, continue
+                    }
+                }
+            }
+
+            // Try without number: "city.jpg"
+            for (const ext of extensions) {
+                const filename = `${city}.${ext}`;
+                const filepath = `assets/photos/${filename}`;
+                try {
+                    const response = await fetch(filepath, { method: 'HEAD' });
+                    if (response.ok) {
+                        return filepath;
+                    }
+                } catch (e) {
+                    // File doesn't exist, continue
+                }
+            }
+
+            return null;
+        }
+
+        // Load image
+        function loadImage(imagePath, container) {
+            if (!imagePath) {
+                container.innerHTML = '<div class="chapter-book__image-placeholder">No image available</div>';
+                return;
+            }
+
+            const img = document.createElement('img');
+            img.src = imagePath;
+            img.alt = 'Chapter image';
+            img.onload = function() {
+                container.innerHTML = '';
+                container.appendChild(img);
+            };
+            img.onerror = function() {
+                container.innerHTML = '<div class="chapter-book__image-placeholder">Image not found</div>';
+            };
+        }
+
+        // Initialize chapter page
+        async function initChapter() {
+            const cityName = getCityFromURL();
+            
+            if (!cityName) {
+                document.getElementById('textContainer').textContent = 'No city specified. Please go back to the map.';
+                return;
+            }
+
+            // Load image
+            const imagePath = await findCityImage(cityName);
+            const imageContainer = document.getElementById('imageContainer');
+            loadImage(imagePath, imageContainer);
+
+            // Load text
+            const textContainer = document.getElementById('textContainer');
+            const message = cityMessages[cityName.toLowerCase()] || 
+                `This is a special place in our story. Every moment here reminds me of you and the beautiful memories we've created together.`;
+            textContainer.textContent = message;
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initChapter);
+    </script>
+</body>
+</html>
