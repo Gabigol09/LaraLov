@@ -1,812 +1,162 @@
-/**
- * Retro Pixel-Art Styled CSS with Minecraft Vibes
- * Responsive flex-based book layout with page flip buttons
- */
+/* ============================
+   GLOBAL PAGE STYLE
+   ============================ */
 
-/* ============================================
-   GLOBAL RESET & PIXEL ART SETTINGS
-   ============================================ */
-
-* {
+   html, body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-    -webkit-font-smoothing: none;
-    -moz-osx-font-smoothing: unset;
+    height: 100%;
+    overflow: hidden; /* REMOVE SCROLL */
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #fff;
 }
 
-/* ============================================
-   BODY & ROOT LAYOUT
-   ============================================ */
-
-body {
-    width: 100vw;
-    height: 100vh;
-    background: 
-        repeating-linear-gradient(
-            0deg,
-            #0a0a0a 0px,
-            #0a0a0a 2px,
-            #000000 2px,
-            #000000 4px
-        );
-    font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-}
-
-/* ============================================
-   HEADER STYLING
-   ============================================ */
+/* ============================
+   HEADER
+   ============================ */
 
 .header {
     width: 100%;
-    background: 
-        linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
-    padding: 12px 24px;
+    height: 80px;
+    padding: 0 30px;
+    background: rgba(255,255,255,0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 4px solid #ffffff;
-    border-top: 2px solid #666666;
-    box-shadow: 
-        0 4px 0 #333333,
-        0 8px 0 #000000;
-    z-index: 100;
-    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .city-name {
-    color: #ffffff;
-    font-size: 20px;
+    font-size: 26px;
     font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    text-shadow: 
-        2px 2px 0px #000000,
-        3px 3px 0px #000000,
-        4px 4px 0px #333333,
-        5px 5px 0px #666666;
-    filter: contrast(1.2);
 }
 
-/* ============================================
-   BUTTON STYLING (Minecraft-style)
-   ============================================ */
-
-.back-button,
-.nav-button {
-    background: 
-        linear-gradient(180deg, #8b7355 0%, #6b5d3f 50%, #4a3d2a 100%);
-    color: #ffffff;
-    border: 3px solid #000000;
-    border-top-color: #ffffff;
-    border-left-color: #ffffff;
-    border-bottom-color: #333333;
-    border-right-color: #333333;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
+.back-button {
+    background: #fff;
+    color: #000;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: 'Courier New', monospace;
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 255, 0.3),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.5),
-        2px 2px 0 #000000;
-    transition: none;
-    position: relative;
 }
 
-.back-button::before,
-.nav-button::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    right: 2px;
-    bottom: 2px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    pointer-events: none;
+.back-button:hover {
+    background: #ddd;
 }
 
-.back-button:hover,
-.nav-button:hover:not(:disabled) {
-    background: 
-        linear-gradient(180deg, #9b8365 0%, #7b6d4f 50%, #5a4d3a 100%);
-    border-top-color: #ffff00;
-    border-left-color: #ffff00;
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 0, 0.5),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.5),
-        2px 2px 0 #000000,
-        0 0 10px rgba(255, 255, 0, 0.6);
-}
-
-.back-button:active,
-.nav-button:active:not(:disabled) {
-    border-top-color: #333333;
-    border-left-color: #333333;
-    border-bottom-color: #ffffff;
-    border-right-color: #ffffff;
-    box-shadow: 
-        inset -1px -1px 0 rgba(255, 255, 255, 0.3),
-        inset 1px 1px 0 rgba(0, 0, 0, 0.5),
-        1px 1px 0 #000000;
-    transform: translate(1px, 1px);
-}
-
-.nav-button {
-    padding: 12px 24px;
-    font-size: 16px;
-    letter-spacing: 3px;
-    min-width: 140px;
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 255, 0.3),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.5),
-        3px 3px 0 #000000,
-        4px 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-.nav-button:hover:not(:disabled) {
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 0, 0.5),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.5),
-        3px 3px 0 #000000,
-        0 0 15px rgba(255, 255, 0, 0.7);
-}
-
-.nav-button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background: 
-        linear-gradient(180deg, #4a3d2a 0%, #3a2d1a 50%, #2a1d0a 100%);
-}
-
-/* ============================================
-   BOOK CONTAINER (Flex-based Layout)
-   ============================================ */
+/* ============================
+   BOOK SYSTEM
+   ============================ */
 
 .book-container {
-    flex: 1;
+    position: relative;
     width: 100%;
+    height: calc(100vh - 160px); /* header + nav */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
     overflow: hidden;
-    position: relative;
 }
 
-/* ============================================
-   BOOK PAGE STYLING (Minecraft Book Look)
-   ============================================ */
+/* ============================
+   BOOK PAGE
+   ============================ */
 
 .book-page {
+    position: absolute;
+    inset: 0;
+
     display: none;
-    width: 95%;
-    max-width: 1400px;
-    min-height: 600px;
-    height: 80vh;
-    max-height: 900px;
-    background: 
-        linear-gradient(90deg, 
-            #d4c5a9 0%, 
-            #e8dcc6 25%, 
-            #f5ead8 50%, 
-            #e8dcc6 75%, 
-            #d4c5a9 100%);
-    border: 6px solid #8b7355;
-    border-left-width: 12px;
-    border-right-width: 12px;
-    box-shadow: 
-        inset 0 0 0 2px #6b5d3f,
-        inset 0 0 0 4px #4a3d2a,
-        0 8px 0 #000000,
-        0 12px 20px rgba(0, 0, 0, 0.8),
-        0 0 0 4px #000000;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Paper texture effect */
-.book-page::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: 
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px,
-            transparent 1px,
-            rgba(139, 115, 85, 0.1) 1px,
-            rgba(139, 115, 85, 0.1) 2px
-        );
-    pointer-events: none;
-    z-index: 1;
-}
-
-.book-page::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: 
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px,
-            transparent 1px,
-            rgba(139, 115, 85, 0.1) 1px,
-            rgba(139, 115, 85, 0.1) 2px
-        );
-    pointer-events: none;
-    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
 .book-page.active {
     display: flex;
 }
 
-/* ============================================
-   PAGE LAYOUT (Left & Right Pages)
-   ============================================ */
+/* ============================
+   PAGE STRUCTURE
+   ============================ */
 
 .page-left,
 .page-right {
-    flex: 1;
-    background: 
-        linear-gradient(180deg, 
-            #f5ead8 0%, 
-            #e8dcc6 50%, 
-            #d4c5a9 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-}
-
-.page-left {
-    border-right: 3px solid #8b7355;
-}
-
-.page-right {
-    padding: 40px;
-    overflow-y: auto;
-}
-
-/* ============================================
-   MEDIA CONTAINER & RESPONSIVE MEDIA
-   ============================================ */
-
-.media-container {
-    width: 100%;
+    width: 50%;
     height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: relative;
+    align-items: center;
 }
 
+/* ============================
+   MEDIA AREA
+   ============================ */
+
+.media-container {
+    width: 90%;
+    height: 90%;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid #fff;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 🔥 ESSA PARTE RESOLVE O SCROLL */
 .media-container img,
 .media-container video {
     max-width: 100%;
     max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border: 4px solid #8b7355;
-    border-top-color: #6b5d3f;
-    border-left-color: #6b5d3f;
-    border-bottom-color: #a8957a;
-    border-right-color: #a8957a;
-    box-shadow: 
-        inset 2px 2px 0 rgba(0, 0, 0, 0.3),
-        inset -2px -2px 0 rgba(255, 255, 255, 0.2),
-        4px 4px 0 #000000,
-        6px 6px 10px rgba(0, 0, 0, 0.5);
-    background: #000000;
-    padding: 4px;
+    object-fit: contain; /* NÃO CORTA */
+    border-radius: 10px;
 }
 
-/* ============================================
-   LOVE QUOTE STYLING
-   ============================================ */
+/* ============================
+   TEXT SIDE
+   ============================ */
 
 .love-quote {
-    color: #4a3d2a;
-    font-size: 24px;
-    line-height: 1.8;
-    text-align: center;
-    padding: 30px;
-    text-shadow: 
-        1px 1px 0px rgba(255, 255, 255, 0.5),
-        2px 2px 0px rgba(212, 197, 169, 0.8);
-    letter-spacing: 1px;
+    font-size: 32px;
     font-style: italic;
-    font-weight: 500;
-    max-width: 100%;
-    word-wrap: break-word;
+    text-align: center;
+    max-width: 80%;
+    line-height: 1.4;
 }
 
-/* ============================================
-   NAVIGATION & PAGE FLIP BUTTONS
-   ============================================ */
+/* ============================
+   NAVIGATION
+   ============================ */
 
 .navigation {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    height: 80px;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-button {
+    padding: 12px 26px;
+    font-size: 20px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.nav-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .page-indicator {
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 12px 20px;
-    background: 
-        linear-gradient(180deg, #4a3d2a 0%, #2a1d0a 100%);
-    border: 3px solid #000000;
-    border-top-color: #666666;
-    border-left-color: #666666;
-    border-bottom-color: #000000;
-    border-right-color: #000000;
-    text-align: center;
-    min-width: 120px;
-    box-shadow: 
-        inset 1px 1px 0 rgba(0, 0, 0, 0.5),
-        2px 2px 0 #000000;
-    letter-spacing: 2px;
-}
-
-/* ============================================
-   LOADING & ERROR STATES
-   ============================================ */
-
-.loading {
-    color: #ffffff;
-    font-size: 28px;
-    text-align: center;
-    padding: 50px;
-    text-shadow: 
-        2px 2px 0px #000000,
-        4px 4px 0px #333333;
-    letter-spacing: 4px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.error {
-    color: #ff4444;
     font-size: 22px;
-    text-align: center;
-    padding: 50px;
-    text-shadow: 
-        2px 2px 0px #000000,
-        4px 4px 0px #660000;
-    letter-spacing: 2px;
     font-weight: bold;
-    border: 4px solid #ff0000;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 30px;
-}
-
-/* ============================================
-   CUSTOM SCROLLBAR (Retro Style)
-   ============================================ */
-
-.page-right::-webkit-scrollbar {
-    width: 12px;
-}
-
-.page-right::-webkit-scrollbar-track {
-    background: #d4c5a9;
-    border: 2px solid #8b7355;
-}
-
-.page-right::-webkit-scrollbar-thumb {
-    background: 
-        linear-gradient(180deg, #8b7355 0%, #6b5d3f 100%);
-    border: 2px solid #000000;
-    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.5);
-}
-
-.page-right::-webkit-scrollbar-thumb:hover {
-    background: 
-        linear-gradient(180deg, #9b8365 0%, #7b6d4f 100%);
-}
-
-/* Firefox scrollbar */
-.page-right {
-    scrollbar-width: thick;
-    scrollbar-color: #8b7355 #d4c5a9;
-}
-
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-
-@media (max-width: 768px) {
-    .book-page {
-        flex-direction: column;
-        height: auto;
-        min-height: auto;
-        width: 98%;
-    }
-
-    .page-left,
-    .page-right {
-        flex: none;
-        min-height: 300px;
-    }
-
-    .page-left {
-        border-right: none;
-        border-bottom: 3px solid #8b7355;
-    }
-
-    .love-quote {
-        font-size: 18px;
-        padding: 20px;
-    }
-
-    .nav-button {
-        padding: 10px 16px;
-        font-size: 14px;
-        min-width: 100px;
-        letter-spacing: 2px;
-    }
-
-    .navigation {
-        flex-direction: column;
-        gap: 10px;
-        bottom: 10px;
-    }
-
-    .city-name {
-        font-size: 16px;
-        letter-spacing: 2px;
-    }
-
-    .back-button {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .book-page {
-        height: auto;
-        max-height: none;
-    }
-
-    .page-left,
-    .page-right {
-        min-height: 250px;
-        padding: 20px;
-    }
-
-    .love-quote {
-        font-size: 16px;
-        padding: 15px;
-    }
-
-    .nav-button {
-        padding: 8px 12px;
-        font-size: 12px;
-        min-width: 80px;
-    }
-
-    .page-indicator {
-        font-size: 14px;
-        padding: 8px 12px;
-        min-width: 80px;
-    }
-}
-
-/* ============================================
-   ANIMATIONS & EFFECTS
-   ============================================ */
-
-@keyframes pageFlip {
-    0% {
-        transform: rotateY(0deg);
-    }
-    50% {
-        transform: rotateY(-90deg);
-    }
-    100% {
-        transform: rotateY(0deg);
-    }
-}
-
-.book-page.flipping {
-    animation: pageFlip 0.6s ease-in-out;
-    transform-style: preserve-3d;
-}
-
-/* ============================================
-   ACCESSIBILITY & FOCUS STATES
-   ============================================ */
-
-.back-button:focus,
-.nav-button:focus {
-    outline: 3px solid #ffff00;
-    outline-offset: 2px;
-}
-
-/* ============================================
-   PRINT STYLES (Optional)
-   ============================================ */
-
-@media print {
-    body {
-        background: white;
-    }
-
-    .header,
-    .navigation {
-        display: none;
-    }
-
-    .book-page {
-        box-shadow: none;
-        border: 1px solid #000;
-        page-break-after: always;
-    }
-}
-
-/* ============================================
-   CHAPTER PAGE — Open Book Layout
-   ============================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
-
-.chapter-page {
-    min-height: 100vh;
-    background: 
-        repeating-linear-gradient(
-            0deg,
-            #0a0a0a 0px,
-            #0a0a0a 2px,
-            #000000 2px,
-            #000000 4px
-        );
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px 80px;
-    overflow-y: auto;
-}
-
-.chapter-book {
-    width: 100%;
-    max-width: 1000px;
-    min-height: 500px;
-    background-image: url('assets/textures/book_texture.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: #e8dcc6;
-    box-shadow: 
-        0 2px 2px rgba(0, 0, 0, 0.1),
-        0 8px 24px rgba(0, 0, 0, 0.3),
-        0 20px 50px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 6px solid #8b7355;
-    border-left-width: 12px;
-    border-right-width: 12px;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    position: relative;
-}
-
-.chapter-book__left {
-    flex: 0 0 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 24px;
-    background: 
-        linear-gradient(180deg, rgba(245, 234, 216, 0.6) 0%, rgba(232, 220, 198, 0.7) 100%);
-    position: relative;
-    border-right: 2px solid rgba(139, 115, 85, 0.4);
-}
-
-.chapter-book__image-wrap {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 320px;
-    aspect-ratio: 4 / 3;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 3px solid rgba(139, 115, 85, 0.6);
-    box-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.25),
-        0 8px 24px rgba(0, 0, 0, 0.2);
-    background: 
-        linear-gradient(180deg, #f5ead8 0%, #e8dcc6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.chapter-book__image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.chapter-book__image-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #8b7355;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    text-align: center;
-    padding: 20px;
-    opacity: 0.6;
-    background: 
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 10px,
-            rgba(139, 115, 85, 0.05) 10px,
-            rgba(139, 115, 85, 0.05) 20px
-        );
-}
-
-.chapter-book__right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40px 40px 48px 44px;
-    background: 
-        linear-gradient(180deg, rgba(250, 245, 238, 0.95) 0%, rgba(245, 234, 216, 0.9) 100%);
-    position: relative;
-}
-
-.chapter-book__text {
-    position: relative;
-    z-index: 1;
-    font-size: 1.15rem;
-    line-height: 1.95;
-    color: #3d3228;
-    letter-spacing: 0.02em;
-    font-family: 'Playfair Display', Georgia, serif;
-}
-
-.chapter-actions {
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 1000px;
-}
-
-.chapter-btn-back {
-    background: 
-        linear-gradient(180deg, #8b7355 0%, #6b5d3f 50%, #4a3d2a 100%);
-    color: #ffffff;
-    border: 3px solid #000000;
-    border-top-color: #c4a574;
-    border-left-color: #c4a574;
-    border-bottom-color: #2a1d0a;
-    border-right-color: #2a1d0a;
-    padding: 12px 28px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-family: 'Courier New', Consolas, monospace;
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 255, 0.25),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.4),
-        4px 4px 0 #000000,
-        6px 6px 12px rgba(0, 0, 0, 0.4);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    text-decoration: none;
-    border-radius: 2px;
-}
-
-.chapter-btn-back:hover {
-    background: 
-        linear-gradient(180deg, #9b8365 0%, #7b6d4f 50%, #5a4d3a 100%);
-    border-top-color: #ffff00;
-    border-left-color: #ffff00;
-    box-shadow: 
-        inset 1px 1px 0 rgba(255, 255, 0, 0.4),
-        inset -1px -1px 0 rgba(0, 0, 0, 0.4),
-        4px 4px 0 #000000,
-        0 0 16px rgba(255, 255, 0, 0.5);
-    transform: translateY(-1px);
-}
-
-.chapter-btn-back:active {
-    border-top-color: #2a1d0a;
-    border-left-color: #2a1d0a;
-    border-bottom-color: #c4a574;
-    border-right-color: #c4a574;
-    box-shadow: 
-        inset -1px -1px 0 rgba(255, 255, 255, 0.2),
-        inset 1px 1px 0 rgba(0, 0, 0, 0.5),
-        2px 2px 0 #000000;
-    transform: translate(2px, 2px);
-}
-
-/* Chapter page responsive */
-@media (max-width: 768px) {
-    .chapter-page {
-        padding: 24px 16px 60px;
-    }
-
-    .chapter-book {
-        flex-direction: column;
-        max-width: 100%;
-    }
-
-    .chapter-book__left {
-        flex: 0 0 auto;
-        min-height: 280px;
-        padding: 24px 20px;
-        border-right: none;
-        border-bottom: 2px solid rgba(139, 115, 85, 0.4);
-    }
-
-    .chapter-book__image-wrap {
-        max-width: 100%;
-        aspect-ratio: 16 / 10;
-    }
-
-    .chapter-book__right {
-        padding: 32px 24px 40px;
-    }
-
-    .chapter-book__text {
-        font-size: 1.05rem;
-        line-height: 1.85;
-    }
-
-    .chapter-actions {
-        margin-top: 24px;
-    }
-
-    .chapter-btn-back {
-        padding: 10px 20px;
-        font-size: 14px;
-        letter-spacing: 2px;
-    }
 }

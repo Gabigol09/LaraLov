@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Love Book</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -32,28 +32,19 @@ let mediaFiles = [];
 const loveQuotes = [
     "Say you'll never ever leave from beside me.",
     "'Cause I want ya, and I need ya",
-    
     "Distance means nothing when someone means everything.",
     "In your smile, I see something more beautiful than the stars.",
     "You are my today and all of my tomorrows."
 ];
 
-// ==========================
-// GET CITY
-// ==========================
 function getCityFromURL() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('city');
+    return params.get("city");
 }
 
-// ==========================
-// LOAD MEDIA (REAL DETECTION)
-// ==========================
 function loadMediaFiles(cityName) {
     return new Promise((resolve) => {
-
-        const city = cityName.toLowerCase();
-        const extensions = ['jpg','jpeg','png','webp','mp4','webm'];
+        const extensions = ["jpg","jpeg","png","webp","mp4","webm"];
         const files = [];
         let index = 1;
 
@@ -61,80 +52,73 @@ function loadMediaFiles(cityName) {
             let extIndex = 0;
             let found = false;
 
-            function tryExtension() {
+            function tryExt() {
                 if (extIndex >= extensions.length) {
-                    if (!found) {
-                        resolve(files);
-                        return;
-                    }
+                    if (!found) resolve(files);
+                    return;
                 }
 
                 const ext = extensions[extIndex];
-                const path = `assets/photos/${city}/${index}.${ext}`;
+                const path = `assets/photos/${cityName}/${index}.${ext}`;
                 const type = detectMediaType(path);
 
-                const testElement = type === 'video'
-                    ? document.createElement('video')
-                    : document.createElement('img');
+                const tester = type === "video"
+                    ? document.createElement("video")
+                    : document.createElement("img");
 
-                testElement.src = path;
+                tester.src = path;
 
-                testElement.onload = () => {
+                tester.onload = () => {
                     files.push({ path });
                     index++;
+                    found = true;
                     tryFile();
                 };
 
-                testElement.onloadeddata = () => {
+                tester.onloadeddata = () => {
                     files.push({ path });
                     index++;
+                    found = true;
                     tryFile();
                 };
 
-                testElement.onerror = () => {
+                tester.onerror = () => {
                     extIndex++;
-                    tryExtension();
+                    tryExt();
                 };
             }
 
-            tryExtension();
+            tryExt();
         }
 
         tryFile();
     });
 }
 
-// ==========================
-// CREATE PAGE
-// ==========================
 function createPage(mediaFile, quote, index) {
+    const page = document.createElement("div");
+    page.className = "book-page";
+    if (index === 0) page.classList.add("active");
 
-    const page = document.createElement('div');
-    page.className = 'book-page';
-    if (index === 0) page.classList.add('active');
+    const left = document.createElement("div");
+    left.className = "page-left";
 
-    const left = document.createElement('div');
-    left.className = 'page-left';
+    const mediaContainer = document.createElement("div");
+    mediaContainer.className = "media-container";
 
-    const mediaContainer = document.createElement('div');
-    mediaContainer.className = 'media-container';
+    const blurBg = document.createElement("div");
+    blurBg.className = "blur-bg";
+    mediaContainer.appendChild(blurBg);
 
-    const mediaElement = renderMedia(
-        mediaContainer,
-        mediaFile.path,
-        '',
-        { controls: true }
-    );
-
-    makeMediaResponsive(mediaElement);
+    const mediaElement = renderMedia(mediaContainer, mediaFile.path);
 
     left.appendChild(mediaContainer);
 
-    const right = document.createElement('div');
-    right.className = 'page-right';
+    const right = document.createElement("div");
+    right.className = "page-right";
 
-    const quoteDiv = document.createElement('div');
-    quoteDiv.className = 'love-quote';
+    const quoteDiv = document.createElement("div");
+    quoteDiv.className = "love-quote";
     quoteDiv.textContent = quote;
 
     right.appendChild(quoteDiv);
@@ -145,31 +129,39 @@ function createPage(mediaFile, quote, index) {
     return page;
 }
 
-// ==========================
-// INIT BOOK
-// ==========================
-async function initBook() {
+function refreshPageMedia(pageIndex) {
+    const page = pages[pageIndex];
+    if (!page) return;
 
+    const mediaContainer = page.querySelector(".media-container");
+    const media = mediaContainer.querySelector("img, video");
+    const blurBg = mediaContainer.querySelector(".blur-bg");
+
+    if (!media || !blurBg) return;
+
+    blurBg.style.backgroundImage = `url(${media.src})`;
+}
+
+async function initBook() {
     const cityName = getCityFromURL();
 
     if (!cityName) {
-        document.getElementById('bookContainer').innerHTML =
-            '<div class="error">City not specified.</div>';
+        document.getElementById("bookContainer").innerHTML =
+            "<div class='error'>City not specified.</div>";
         return;
     }
 
-    document.getElementById('cityName').textContent = cityName.toUpperCase();
-
+    document.getElementById("cityName").textContent = cityName.toUpperCase();
     mediaFiles = await loadMediaFiles(cityName);
 
     if (mediaFiles.length === 0) {
-        document.getElementById('bookContainer').innerHTML =
+        document.getElementById("bookContainer").innerHTML =
             `<div class="error">No photos found for ${cityName}</div>`;
         return;
     }
 
-    const container = document.getElementById('bookContainer');
-    container.innerHTML = '';
+    const container = document.getElementById("bookContainer");
+    container.innerHTML = "";
 
     pages = mediaFiles.map((file, index) => {
         const quote = loveQuotes[index % loveQuotes.length];
@@ -178,43 +170,43 @@ async function initBook() {
         return page;
     });
 
-    document.getElementById('navigation').style.display = 'flex';
+    document.getElementById("navigation").style.display = "flex";
     updateNavigation();
+    refreshPageMedia(0);
 }
 
-// ==========================
-// NAVIGATION
-// ==========================
 function updateNavigation() {
-    document.getElementById('prevButton').disabled = currentPage === 0;
-    document.getElementById('nextButton').disabled = currentPage === pages.length - 1;
-    document.getElementById('pageIndicator').textContent =
+    document.getElementById("prevButton").disabled = currentPage === 0;
+    document.getElementById("nextButton").disabled = currentPage === pages.length - 1;
+    document.getElementById("pageIndicator").textContent =
         `${currentPage + 1} / ${pages.length}`;
 }
 
 function nextPage() {
     if (currentPage < pages.length - 1) {
-        pages[currentPage].classList.remove('active');
+        pages[currentPage].classList.remove("active");
         currentPage++;
-        pages[currentPage].classList.add('active');
+        pages[currentPage].classList.add("active");
+        refreshPageMedia(currentPage);
         updateNavigation();
     }
 }
 
 function previousPage() {
     if (currentPage > 0) {
-        pages[currentPage].classList.remove('active');
+        pages[currentPage].classList.remove("active");
         currentPage--;
-        pages[currentPage].classList.add('active');
+        pages[currentPage].classList.add("active");
+        refreshPageMedia(currentPage);
         updateNavigation();
     }
 }
 
 function goToMap() {
-    window.location.href = 'map.html';
+    window.location.href = "map.html";
 }
 
-window.addEventListener('load', initBook);
+window.addEventListener("load", initBook);
 </script>
 
 </body>
